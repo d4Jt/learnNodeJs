@@ -14,4 +14,8 @@ request methods:
 SSR (server side rendering) & CSR (client side rendering)
 
 
+nodemon giúp client host tự reset để check
+
+morgan giúp trả về HTTP request logger
+
 */
