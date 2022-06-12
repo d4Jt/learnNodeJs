@@ -6,6 +6,10 @@ const app = express();
 const port = 3000;
 
 const route = require('./routes');
+const db = require('./config/db');
+
+// Connect to MongoDB
+db.connect();
 
 app.use(express.json()); // xử lý dữ liệu gửi từ code js lên
 app.use(express.urlencoded({ extended: true })); // đây là middleware để xử lý dữ liệu từ form submit
@@ -25,7 +29,7 @@ route(app)
 
 
 //  127.0.0.1 - localhost
-// start lên 1 web server 
+// start lên 1 web server
 app.listen(port, () => {
   console.log(`Example app listening on port http://localhost:${port}`);
 });
