@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true })); // đây là middleware để x
 // khi gặp path này, sẽ kiểm tra với định dạng là file tĩnh cung cấp trong static
 app.use(express.static(path.join(__dirname, 'public')));
 // HTTP logger
-// app.use(morgan('combined'));
+app.use(morgan('combined'));
 // Template engine
 // app này sẽ sử dùng template engine là handlebars
 app.engine('hbs', engine({ extname: '.hbs' }));

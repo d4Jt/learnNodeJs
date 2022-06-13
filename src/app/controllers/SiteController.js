@@ -15,6 +15,7 @@ class SiteController {
 
       Course.find({})
          // hoặc trong HTML thay vì this. thì có thể dùng this._doc.
+         // .then(courses => res.render('home', courses))
          .then((courses) =>
             res.render('home', {
                courses: multipleMongooseToObject(courses)
