@@ -57,11 +57,24 @@ class CourseController {
          .catch(next);
    }
 
+   // [POST] /courses/handle-form-actions
+   handleFormActions(req, res, next) {
+      switch (req.body.action) {
+         case 'delete':
+            // dùng delete từ plugin mongoose-delete
+            //  cú pháp where in trong mongoDB ($in) lọc trong 1 cái list
+            Course.delete({ _id: { $in: req.body.courseIds } }) // xoá tất cả thg nào có Id nằm trong cái list này
+               .then(() => res.redirect('back'))
+               .catch(next);
+            break;
+         default:
+            res.json({ message: 'Action is invalid!' });
+      }
+   }
+
    // save dữ liệu vào database
    // [POST] /courses/store
    store(req, res, next) {
-
-
       req.body.image = `https://img.youtube.com/vi/${req.body.videoId}/sddefault.jpg`;
       const course = new Course(req.body);
       course
