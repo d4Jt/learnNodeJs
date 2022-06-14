@@ -16,17 +16,28 @@ class CourseController {
       res.render('courses/create');
    }
 
+   // render trả về dữ liệu theo id
    // [GET] /courses/:id/edit
    edit(req, res, next) {
       Course.findById(req.params.id)
-         .then(course => res.render('courses/edit', { course: mongooseToObject(course) }))
+         // render trả dữ liệu vào file views/courses/edit.js
+         .then((course) =>
+            res.render('courses/edit', { course: mongooseToObject(course) })
+         )
          .catch(next);
    }
 
    // [PUT] /courses/:id
    update(req, res, next) {
-      Course.updateOne({_id: req.params.id}, req.body)
+      Course.updateOne({ _id: req.params.id }, req.body)
          .then(() => res.redirect('/me/courses'))
+         .catch(next);
+   }
+
+   // [DELETE] /courses/:id
+   delete(req, res, next) {
+      Course.deleteOne({ _id: req.params.id })
+         .then(() => res.redirect('back'))
          .catch(next);
    }
 
