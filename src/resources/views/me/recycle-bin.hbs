@@ -1,10 +1,31 @@
-<div class="mt-4">
-   <a href="/me/courses">Quay lại</a>
-   <h3>Khoá học đã xoá</h3>
+<form name="container-form" class="mt-4" method="POST" action="/courses/handle-form-actions">
+   <div>
+      <a href="/me/courses">Quay lại</a>
+      <h3>Khoá học đã xoá</h3>
+
+      <div class="mt-4 d-flex align-items-center">
+         <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="check-all">
+            <label class="form-check-label" for="check-all">
+               Chọn tất cả
+            </label>
+         </div>
+
+         <select name="action" class="form-select form-select-sm checkbox-select-all-options" aria-label=".form-select-sm example" required>
+            <option value="">-- Hành động --</option>
+            <option value="force-delete">Xoá vĩnh viễn</option>
+            <option value="restore">Khôi phục</option>
+         </select>
+
+         <button class="btn btn-primary btn-sm btn-check-all-submit disabled">Áp dụng</button>
+      </div>
+   </div>
+
 
    <table class="table mt-4">
    <thead>
       <tr>
+         <th scope="col"></th>
          <th scope="col">#</th>
          <th scope="col">Tên khoá học</th>
          <th scope="col">Thời gian tạo</th>
@@ -15,6 +36,11 @@
 
    {{#each courses}}
       <tr>
+         <td>
+            <div class="form-check">
+               <input class="form-check-input" type="checkbox" name="courseIds[]" value="{{this._id}}">
+            </div>
+         </td>
          {{!-- tên_function đối_số_1 đối_số_2 --}}
          <th scope="row">{{sum @index 1}}</th>
          <td>{{this.name}}</td>
@@ -36,7 +62,7 @@
 
    </tbody>
 </table>
-</div>
+</form>
 
 {{!-- Confirm delete course --}}
 <div id="delete-course-modal" class="modal" tabindex="-1">
@@ -90,4 +116,55 @@
          restoreForm.submit();
       })
    })
+</script>
+
+<script>
+   const checkAll = document.querySelector('#check-all');
+   const courseItemCheckboxAll = document.querySelectorAll('input[name="courseIds[]"]');
+   const checkAllSubmitBtn = document.querySelector('.btn-check-all-submit');
+
+   checkAll.addEventListener('change', () => {
+      if (checkAll.checked) {
+         courseItemCheckboxAll.forEach(courseItemCheckbox => {
+            courseItemCheckbox.checked = true;
+         })
+      } else {
+         courseItemCheckboxAll.forEach(courseItemCheckbox => {
+            courseItemCheckbox.checked = false;
+         })
+      }
+      renderCheckAllSubmitBtn();
+   })
+
+
+   courseItemCheckboxAll.forEach(courseItemCheckbox => {
+      courseItemCheckbox.addEventListener('change', () => {
+         let count = 0;
+         courseItemCheckboxAll.forEach(courseItemCheckbox => {
+            if (courseItemCheckbox.checked) {
+               count++;
+            }
+         })
+         if (count === courseItemCheckboxAll.length) {
+            checkAll.checked = true;
+         } else {
+            checkAll.checked = false;
+         }
+         renderCheckAllSubmitBtn();
+      })
+   })
+
+   function renderCheckAllSubmitBtn() {
+         let count = 0;
+      courseItemCheckboxAll.forEach(courseItemCheckbox => {
+         if (courseItemCheckbox.checked) {
+            count++;
+         }
+         if (count > 0) {
+            checkAllSubmitBtn.classList.remove('disabled');
+         } else {
+            checkAllSubmitBtn.classList.add('disabled');
+         }
+      })
+   }
 </script>
