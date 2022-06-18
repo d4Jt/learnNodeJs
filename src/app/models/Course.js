@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 
 const CourseSchema = new Schema(
    {
-      // _id: { type: Number, },
+      _id: { type: Number, },
       name: { type: String, default: '', maxLength: 255 },
       description: { type: String, default: '' },
       image: { type: String, default: '' },
@@ -15,7 +15,7 @@ const CourseSchema = new Schema(
       videoId: { type: String, default: '' },
    },
    {
-      // _id: false,
+      _id: false,
       timestamps: true,
    }
 );
@@ -32,8 +32,8 @@ CourseSchema.query.sortable = function (req) {
 }
 
 // Adds plugin
+CourseSchema.plugin(AutoIncrement);
 mongoose.plugin(slug);
 CourseSchema.plugin(mongooseDelete, { deletedAt: true, overrideMethods: 'all' });
-// Course.plugin(AutoIncrement);
 
 module.exports = mongoose.model('Course', CourseSchema);
