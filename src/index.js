@@ -6,6 +6,8 @@ const methodOverride = require('method-override');
 const app = express();
 const port = 3000;
 
+const SortMiddleware = require('./app/middleware/SortMiddleware');
+
 const route = require('./routes');
 const db = require('./config/db');
 
@@ -20,13 +22,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(methodOverride('_method'));
 
+// Custom middlewares
+app.use(SortMiddleware); // apply middleware trên toàn bộ tuyến đường
+
 // HTTP logger
 app.use(morgan('combined'));
 // Template engine
 // app này sẽ sử dùng template engine là handlebars
 app.engine(
    'hbs',
-   engine({ extname: '.hbs', helpers: { sum: (a, b) => a + b } })
+   engine({
+      extname: '.hbs',
+      helpers: require('./helpers/handlebars'),
+   })
 );
 app.set('view engine', 'hbs'); // đặt cho ứng dụng sử dụng template engine handlebars
 app.set('views', path.join(__dirname, 'resources', 'views'));

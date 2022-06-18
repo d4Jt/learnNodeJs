@@ -1,9 +1,9 @@
 <form name="container-form" class="mt-4" method="POST" action="/courses/handle-form-actions">
    <div>
       <h3>Khoá học của tôi</h3>
-      {{#if deletedCount}}
+      {{!-- {{#if deletedCount}} --}}
       <a href="/me/recycle-bin">Thùng tác ({{deletedCount}})</a>
-      {{/if}}
+      {{!-- {{/if}} --}}
 
       <div class="mt-4 d-flex align-items-center">
          <div class="form-check">
@@ -27,9 +27,19 @@
       <tr>
          <th scope="col"></th>
          <th scope="col">#</th>
-         <th scope="col">Tên khoá học</th>
-         <th scope="col">Thời gian tạo</th>
-         <th scope="col">Lần cuối update</th>
+         <th scope="col">
+            Tên khoá học
+            {{{sortable 'name' _sort}}}
+            </th>
+         <th scope="col">
+            Thời gian tạo
+            {{{sortable 'createdAt' _sort}}}
+            </th>
+         <th scope="col">
+            Lần cuối update
+            {{{sortable 'updatedAt' _sort}}}
+            </th>
+
       </tr>
    </thead>
    <tbody>
